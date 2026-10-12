@@ -1,5 +1,9 @@
 import React from "react";
 
+import musicImg from "../assets/image/music.png";
+import toseatImg from "../assets/image/toseat.png";
+import imusicImg from "../assets/image/Imusic.png"; // keep exact file-name case: Vercel is case-sensitive
+
 const PROJECTS = [
   {
     title: "Music",
@@ -7,7 +11,7 @@ const PROJECTS = [
     description:
       "Frontend-only music player web app for browsing and playing songs, built with React and a responsive Tailwind CSS layout.",
     tags: ["React", "Tailwind"],
-    image: "/src/assets/image/music.png",
+    image: musicImg,
     link: "https://play-music-blue-one.vercel.app/",
   },
   {
@@ -16,7 +20,7 @@ const PROJECTS = [
     description:
       "Restaurant ordering platform where customers browse the menu by cuisine, check prices and stock status, and place orders, with an admin dashboard for managing the menu and orders.",
     tags: ["React", "Tailwind", "PHP", "Laravel"],
-    image: "/src/assets/image/toseat.png",
+    image: toseatImg,
     link: "https://tos-eat-swart.vercel.app/",
   },
   {
@@ -25,7 +29,7 @@ const PROJECTS = [
     description:
       "Music streaming web app where users browse and play songs, with an admin dashboard for managing the music library.",
     tags: ["React", "Tailwind", "PHP", "Laravel"],
-    image: "/src/assets/image/Imusic.png",
+    image: imusicImg,
     link: "https://imusic-hub.vercel.app/",
   },
 ];
@@ -57,7 +61,7 @@ const Projects = () => {
         .proj-card:hover { border-color: rgba(251,191,36,0.4); transform: translateY(-3px); }
         .proj-thumb {
           position: relative;
-          height: 350px;
+          aspect-ratio: 16 / 10;
           overflow: hidden;
           border-bottom: 1px solid rgba(255,255,255,0.08);
           background: linear-gradient(135deg, #1e293b, #0f172a);
@@ -100,12 +104,14 @@ const Projects = () => {
         .proj-live:hover { color: ${AMBER}; }
         .proj-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 2rem;
         }
-        @media (max-width: 800px) {
+        @media (max-width: 1100px) {
+          .proj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 700px) {
           .proj-grid { grid-template-columns: 1fr; }
-          .proj-thumb { height: 240px; }
         }
       `}</style>
 
@@ -121,7 +127,7 @@ const Projects = () => {
         >
           SELECTED WORK
         </p>
-        <h1
+        <h2
           style={{
             fontSize: "clamp(2.2rem, 5vw, 3.2rem)",
             fontWeight: 700,
@@ -129,7 +135,7 @@ const Projects = () => {
           }}
         >
           My projects
-        </h1>
+        </h2>
 
         <div className="proj-grid">
           {PROJECTS.map((p) => (
@@ -139,7 +145,10 @@ const Projects = () => {
                   src={p.image}
                   alt={`${p.title} preview`}
                   loading="lazy"
-                  onError={(e) => (e.currentTarget.style.display = "none")}
+                  onError={(e) => {
+                    console.warn(`[Projects] image failed to load: ${p.image}`);
+                    e.currentTarget.style.display = "none";
+                  }}
                 />
                 <a
                   className="proj-arrow"
@@ -160,9 +169,9 @@ const Projects = () => {
                   flex: 1,
                 }}
               >
-                <h2 style={{ fontSize: "1.35rem", fontWeight: 600, margin: 0 }}>
+                <h3 style={{ fontSize: "1.35rem", fontWeight: 600, margin: 0 }}>
                   {p.title}
-                </h2>
+                </h3>
                 <p style={{ color: AMBER, margin: "0.35rem 0 1rem" }}>
                   {p.subtitle}
                 </p>
