@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { FaEye, FaDownload } from "react-icons/fa";
 import photo from "../assets/image/photo_2026-03-07_17-05-06.jpg";
+
+/* Put your CV at  public/cv/Pen_Bora_CV.pdf  (Vite serves /public from "/") */
+const CV_URL = "/public/cv/penbora_CV (1).pdf";
+const CV_FILENAME = "Pen_Bora_CV.pdf"; // name the visitor's download gets
 
 const ROLES = [
   "Frontend Developer",
@@ -10,7 +15,6 @@ const ROLES = [
 const STATS = [
   { v: "3+", l: "Years", c: "#6ee7b7" },
   { v: "2+", l: "Projects", c: "#a78bfa" },
-  
 ];
 
 /* ─── Typewriter ─────────────────────────────────────────────────────────── */
@@ -103,7 +107,7 @@ export default function Home() {
         /* buttons (real <Link>s, no <button> nested in <a>) */
         .hm-btn {
           display:inline-flex; align-items:center; gap:8px;
-          padding:.78rem 1.75rem; border-radius:10px;
+          padding:.78rem 1.25rem; min-height:48px; border-radius:10px;
           font-family:'Inter',sans-serif; font-size:.87rem; font-weight:600;
           text-decoration:none; backdrop-filter:blur(16px);
           transition:all .25s;
@@ -130,6 +134,35 @@ export default function Home() {
           background:rgba(255,255,255,.07);
           border-color:rgba(255,255,255,.15);
         }
+
+        /* Actions: tidy 2-column block, CV pill spans the full width below */
+        .hm-actions {
+          display:grid; grid-template-columns:1fr 1fr;
+          gap:1.1rem 1rem; max-width:440px;
+        }
+        .hm-actions .hm-btn { justify-content:center; box-sizing:border-box; }
+
+        /* CV: one pill with two actions (view / download) */
+        .hm-cv {
+          grid-column:1 / -1;
+          display:grid; grid-template-columns:1fr 1fr;
+          border-radius:10px; overflow:hidden;
+          border:1px solid rgba(167,139,250,.35);
+          background:rgba(167,139,250,.08);
+          backdrop-filter:blur(16px);
+          transition:border-color .25s, box-shadow .25s;
+        }
+        .hm-cv:hover { border-color:rgba(167,139,250,.6); box-shadow:0 0 26px rgba(167,139,250,.18); }
+        .hm-cv a {
+          display:inline-flex; align-items:center; justify-content:center; gap:8px;
+          padding:.78rem 1.25rem; min-height:48px;
+          font-family:'Inter',sans-serif; font-size:.87rem; font-weight:600;
+          color:#e9e5ff; text-decoration:none;
+          transition:background .2s;
+        }
+        .hm-cv a + a { border-left:1px solid rgba(167,139,250,.25); }
+        .hm-cv a:hover { background:rgba(167,139,250,.18); }
+        .hm-cv a:focus-visible { outline:2px solid #a78bfa; outline-offset:-2px; }
 
         /* floating badges around the photo */
         .hm-badge {
@@ -229,10 +262,7 @@ export default function Home() {
           </div>
 
           {/* greeting + name */}
-          <div
-            className="hm-in"
-            style={{ marginBottom: ".9rem", animationDelay: ".1s" }}
-          >
+          <div className="hm-in" style={{ marginBottom: ".9rem", animationDelay: ".1s" }}>
             <p
               style={{
                 fontFamily: "'Fira Code',monospace",
@@ -333,13 +363,10 @@ export default function Home() {
               animationDelay: ".3s",
             }}
           >
-            I build{" "}
-            <span style={{ color: "#6ee7b7", fontWeight: 500 }}>scalable</span>,{" "}
-            <span style={{ color: "#a78bfa", fontWeight: 500 }}>
-              pixel-perfect
-            </span>{" "}
-            web applications with a focus on performance and clean architecture,
-            turning complex problems into elegant digital solutions.
+            I build <span style={{ color: "#6ee7b7", fontWeight: 500 }}>scalable</span>,{" "}
+            <span style={{ color: "#a78bfa", fontWeight: 500 }}>pixel-perfect</span> web
+            applications with a focus on performance and clean architecture, turning
+            complex problems into elegant digital solutions.
           </p>
 
           {/* stats */}
@@ -349,7 +376,7 @@ export default function Home() {
               display: "flex",
               gap: ".9rem",
               flexWrap: "wrap",
-              marginBottom: "2.2rem",
+              marginBottom: "2.75rem",
               animationDelay: ".4s",
             }}
           >
@@ -366,14 +393,7 @@ export default function Home() {
                     background: `linear-gradient(90deg,transparent,${s.c}66,transparent)`,
                   }}
                 />
-                <span
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "1.4rem",
-                    color: s.c,
-                    lineHeight: 1,
-                  }}
-                >
+                <span style={{ fontWeight: 700, fontSize: "1.4rem", color: s.c, lineHeight: 1 }}>
                   {s.v}
                 </span>
                 <span
@@ -391,22 +411,22 @@ export default function Home() {
             ))}
           </div>
 
-          {/* CTAs: client-side navigation, no full page reload */}
-          <div
-            className="hm-in"
-            style={{
-              display: "flex",
-              gap: ".85rem",
-              flexWrap: "wrap",
-              animationDelay: ".5s",
-            }}
-          >
+          {/* Actions */}
+          <div className="hm-in hm-actions" style={{ animationDelay: ".5s" }}>
             <a href="#contact" className="hm-btn hm-btn-primary">
               Get in touch <span aria-hidden="true">→</span>
             </a>
             <a href="#projects" className="hm-btn hm-btn-ghost">
               View projects
             </a>
+            <div className="hm-cv" role="group" aria-label="Curriculum vitae">
+              <a href={CV_URL} target="_blank" rel="noopener noreferrer">
+                <FaEye aria-hidden="true" /> View CV
+              </a>
+              <a href={CV_URL} download={CV_FILENAME}>
+                <FaDownload aria-hidden="true" /> Download
+              </a>
+            </div>
           </div>
         </div>
 
@@ -459,12 +479,7 @@ export default function Home() {
             />
             <div
               aria-hidden="true"
-              style={{
-                position: "absolute",
-                inset: "3px",
-                borderRadius: "50%",
-                background: "#07090f",
-              }}
+              style={{ position: "absolute", inset: "3px", borderRadius: "50%", background: "#07090f" }}
             />
             <div
               aria-hidden="true"
@@ -472,8 +487,7 @@ export default function Home() {
                 position: "absolute",
                 inset: "3px",
                 borderRadius: "50%",
-                background:
-                  "linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 55%)",
+                background: "linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 55%)",
                 zIndex: 3,
                 pointerEvents: "none",
               }}
@@ -492,12 +506,7 @@ export default function Home() {
                 alt="Portrait of Pen Bora"
                 width="295"
                 height="295"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center top",
-                }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
               />
             </div>
           </div>
@@ -525,27 +534,14 @@ export default function Home() {
                   animation: "glowPulse 2s ease-in-out infinite",
                 }}
               />
-              <span
-                style={{
-                  fontSize: ".75rem",
-                  fontWeight: 600,
-                  color: "#f1f5f9",
-                }}
-              >
+              <span style={{ fontSize: ".75rem", fontWeight: 600, color: "#f1f5f9" }}>
                 Open to opportunities
               </span>
             </div>
           </div>
 
           <div className="hm-badge hm-badge-exp">
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: "1.25rem",
-                color: "#a78bfa",
-                lineHeight: 1,
-              }}
-            >
+            <div style={{ fontWeight: 700, fontSize: "1.25rem", color: "#a78bfa", lineHeight: 1 }}>
               1+
             </div>
             <div
