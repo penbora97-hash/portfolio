@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { FaEye, FaDownload } from "react-icons/fa";
 import photo from "../assets/image/photo_2026-03-07_17-05-06.jpg";
-
+import MyCv from "/public/cv/penbora_CV (1).pdf"
 /* Put your CV at  public/cv/Pen_Bora_CV.pdf  (Vite serves /public from "/") */
-const CV_URL = "/public/cv/penbora_CV (1).pdf";
+const CV_URL = MyCv; // "/cv/Pen_Bora_CV.pdf"
 const CV_FILENAME = "Pen_Bora_CV.pdf"; // name the visitor's download gets
 
 const ROLES = [
